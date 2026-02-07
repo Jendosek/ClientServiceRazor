@@ -86,7 +86,6 @@ public class ClientTests
         context.Clients.Add(client);
         context.SaveChanges();
 
-        // Remove and save
         context.Clients.Remove(client);
         context.SaveChanges();
 
