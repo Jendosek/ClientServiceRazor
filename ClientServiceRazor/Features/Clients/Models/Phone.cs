@@ -1,8 +1,13 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace ClientServiceRazor.Features.Clients.Models;
 
 public class Phone
 {
     public int Id { get; set; }
+    [DataType(DataType.PhoneNumber)]
+    [Column(TypeName = "varchar(50)")]  
     public string Number { get; set; } = null!;
     public CountryCode CountryCode { get; set; }
     //+++

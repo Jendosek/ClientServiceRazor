@@ -1,10 +1,22 @@
+using System.ComponentModel.DataAnnotations;
+using ClientServiceRazor.Features.Clients.Models;
+
 namespace ClientServiceRazor.Features.Users.Models;
 
 public class User
 {
     public int Id { get; set; }
+
+    [Required]
+    [MaxLength(50)]
     public string Login { get; set; } = null!;
+
+    [Required]
+    [MaxLength(255)]
     public string Password { get; set; } = null!;
+
+    [Required]
+    [MaxLength(100)]
     public string Email { get; set; } = null!;
     
     public DateTime CreatedAt { get; set; }
