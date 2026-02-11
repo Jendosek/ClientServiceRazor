@@ -3,17 +3,65 @@
 
 @{
     Layout = null;
+    ViewData["Title"] = "Index";
 }
 
-<!DOCTYPE html>
+<h2>Add New Client</h2>
+<form method="post">
+    <div>
+        <label>Surname</label>
+        <input asp-for="NewClient.Surname"/>
+        <span asp-validation-for="NewClient.Surname"></span>
+    </div>
+    <div>
+        <label>First Name</label>
+        <input asp-for="NewClient.FirstName"/>
+        <span asp-validation-for="NewClient.FirstName"></span>
+    </div>
+    <div>
+        <label>Patronymic</label>
+        <input asp-for="NewClient.Patronymic"/>
+        <span asp-validation-for="NewClient.Patronymic"></span>
+    </div>
+    <div>
+        <label>Email</label>
+        <input asp-for="NewClient.Email"/>
+        <span asp-validation-for="NewClient.Email"></span>
+    </div>
+    <div>
+        <label>Birth Date</label>
+        <input asp-for="NewClient.BirthDate"/>
+        <span asp-validation-for="NewClient.BirthDate"></span>
+    </div>
+    <button type="submit">Add Client</button>
+</form>
 
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-<div>
-    
-</div>
-</body>
-</html>
+<hr/>
+
+<h2>Clients List</h2>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Surname</th>
+        <th>First Name</th>
+        <th>Patronymic</th>
+        <th>Email</th>
+        <th>Birth Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var client in Model.Clients)
+    {
+        <tr>
+            <td>@client.Id</td>
+            <td>@client.Surname</td>
+            <td>@client.FirstName</td>
+            <td>@client.Patronymic</td>
+            <td>@client.Email</td>
+            <td>@client.BirthDate</td>
+        </tr>
+    }
+    </tbody>
+</table>
+

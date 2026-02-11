@@ -16,7 +16,6 @@
     <ItemGroup>
       <Folder Include="Features\Clients\Data\" />
       <Folder Include="Features\Clients\Services\" />
-      <Folder Include="Features\Clients\ViewModels\" />
       <Folder Include="Features\Users\Data\" />
       <Folder Include="Features\Users\Services\" />
       <Folder Include="Features\Users\ViewModels\" />

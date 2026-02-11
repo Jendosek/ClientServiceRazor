@@ -4,8 +4,25 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddRazorPages();
+// builder.Services.AddRazorPages();
 
+builder.Services.AddRazorPages(options =>
+    {
+        options.RootDirectory = "/";
+        options.Conventions.AddFolderRouteModelConvention(
+            "/Features",
+            model =>
+            {
+                foreach (var selector in model.Selectors)
+                {
+                    selector.AttributeRouteModel.Template = 
+                        selector.AttributeRouteModel.Template
+                            .Replace("Features/", "")
+                            .Replace("/Pages", "");
+                }
+            });
+    }
+);
 
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -30,5 +47,14 @@ app.UseAuthorization();
 app.MapStaticAssets();
 app.MapRazorPages()
     .WithStaticAssets();
+
+app.MapGet("/",
+    context =>
+    {
+        context.Response.Redirect("/Clients");
+        return Task.CompletedTask;
+    }
+);
+
 
 app.Run();
