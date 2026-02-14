@@ -2,18 +2,98 @@
 @model ClientServiceRazor.Features.Users.Pages.Index
 
 @{
-    Layout = null;
+    ViewData["Title"] = "Users Management";
 }
 
-<!DOCTYPE html>
+<div class="container mt-4">
+    <h1>@ViewData["Title"]</h1>
 
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-<div>
-    
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5>Add New User</h5>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="NewUser.Login" class="form-label">Login</label>
+                        <input asp-for="NewUser.Login" class="form-control" />
+                        <span asp-validation-for="NewUser.Login" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="NewUser.Password" class="form-label">Password</label>
+                        <input asp-for="NewUser.Password" type="password" class="form-control" />
+                        <span asp-validation-for="NewUser.Password" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label asp-for="NewUser.Email" class="form-label">Email</label>
+                        <input asp-for="NewUser.Email" type="email" class="form-control" />
+                        <span asp-validation-for="NewUser.Email" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label asp-for="NewUser.RoleId" class="form-label">Role</label>
+                        <select asp-for="NewUser.RoleId" class="form-select">
+                            <option value="">Select Role</option>
+                            @foreach (var role in Model.Roles)
+                            {
+                                <option value="@role.Id">@role.Name</option>
+                            }
+                        </select>
+                        <span asp-validation-for="NewUser.RoleId" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label asp-for="NewUser.StatusId" class="form-label">Status</label>
+                        <select asp-for="NewUser.StatusId" class="form-select">
+                            <option value="">Select Status</option>
+                            @foreach (var status in Model.Statuses)
+                            {
+                                <option value="@status.Id">@status.Name</option>
+                            }
+                        </select>
+                        <span asp-validation-for="NewUser.StatusId" class="text-danger"></span>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Add User</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card mt-4">
+        <div class="card-header">
+            <h5>Users List</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Login</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Created At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model.Users)
+                    {
+                        <tr>
+                            <td>@user.Id</td>
+                            <td>@user.Login</td>
+                            <td>@user.Email</td>
+                            <td>@user.Role.Name</td>
+                            <td>@user.Status.Name</td>
+                            <td>@user.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
-</body>
-</html>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
