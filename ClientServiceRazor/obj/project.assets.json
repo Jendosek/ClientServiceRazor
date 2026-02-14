@@ -3041,25 +3041,24 @@
     ]
   },
   "packageFolders": {
-    "/Users/evgenijbalaker/.nuget/packages/": {}
+    "/home/runner/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/evgenijbalaker/RiderProjects/ClientServiceRazor/ClientServiceRazor/ClientServiceRazor.csproj",
+      "projectUniqueName": "/home/runner/work/ClientServiceRazor/ClientServiceRazor/ClientServiceRazor/ClientServiceRazor.csproj",
       "projectName": "ClientServiceRazor",
-      "projectPath": "/Users/evgenijbalaker/RiderProjects/ClientServiceRazor/ClientServiceRazor/ClientServiceRazor.csproj",
-      "packagesPath": "/Users/evgenijbalaker/.nuget/packages/",
-      "outputPath": "/Users/evgenijbalaker/RiderProjects/ClientServiceRazor/ClientServiceRazor/obj/",
+      "projectPath": "/home/runner/work/ClientServiceRazor/ClientServiceRazor/ClientServiceRazor/ClientServiceRazor.csproj",
+      "packagesPath": "/home/runner/.nuget/packages/",
+      "outputPath": "/home/runner/work/ClientServiceRazor/ClientServiceRazor/ClientServiceRazor/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/evgenijbalaker/.nuget/NuGet/NuGet.Config"
+        "/home/runner/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net10.0"
       ],
       "sources": {
-        "/usr/local/share/dotnet/library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -3142,7 +3141,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/10.0.102/PortableRuntimeIdentifierGraph.json",
+        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/10.0.102/PortableRuntimeIdentifierGraph.json",
         "packagesToPrune": {
           "Microsoft.AspNetCore": "(,10.0.32767]",
           "Microsoft.AspNetCore.Antiforgery": "(,10.0.32767]",
