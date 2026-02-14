@@ -3,17 +3,83 @@
 
 @{
     Layout = null;
+    Layout = "/Pages/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Users";
 }
 
-<!DOCTYPE html>
+<h2>Add New User</h2>
+<form method="post">
+    @Html.AntiForgeryToken()
+    <div>
+        <label>Login</label>
+        <input asp-for="NewUser.Login"/>
+        <span asp-validation-for="NewUser.Login"></span>
+    </div>
+    <div>
+        <label>Password</label>
+        <input asp-for="NewUser.Password" type="password"/>
+        <span asp-validation-for="NewUser.Password"></span>
+    </div>
+    <div>
+        <label>Email</label>
+        <input asp-for="NewUser.Email"/>
+        <span asp-validation-for="NewUser.Email"></span>
+    </div>
+    <div>
+        <label>Role</label>
+        <select asp-for="NewUser.RoleId">
+            <option value="">-- Select Role --</option>
+            @foreach (var role in Model.Roles)
+            {
+                <option value="@role.Id">@role.Name</option>
+            }
+        </select>
+        <span asp-validation-for="NewUser.RoleId"></span>
+    </div>
+    <div>
+        <label>Status</label>
+        <select asp-for="NewUser.StatusId">
+            <option value="">-- Select Status --</option>
+            @foreach (var status in Model.Statuses)
+            {
+                <option value="@status.Id">@status.Name</option>
+            }
+        </select>
+        <span asp-validation-for="NewUser.StatusId"></span>
+    </div>
+    <button type="submit">Add User</button>
+</form>
 
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-<div>
-    
-</div>
-</body>
-</html>
+<hr/>
+
+<h2>Users List</h2>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Login</th>
+        <th>Email</th>
+        <th>Role</th>
+        <th>Status</th>
+        <th>Created At</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var user in Model.Users)
+    {
+        <tr>
+            <td>@user.Id</td>
+            <td>@user.Login</td>
+            <td>@user.Email</td>
+            <td>@user.Role.Name</td>
+            <td>@user.Status.Name</td>
+            <td>@user.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@section Scripts {
+    @* <partial name="_ValidationScriptsPartial" /> *@
+}
+

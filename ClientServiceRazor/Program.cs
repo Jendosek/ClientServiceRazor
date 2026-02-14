@@ -1,4 +1,5 @@
 using ClientServiceRazor.Data;
+using ClientServiceRazor.Features.Users.Models;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +30,34 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
+
+// Seed initial data for Roles and Statuses
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    
+    // Seed Roles
+    if (!context.Roles.Any())
+    {
+        context.Roles.AddRange(
+            new Role { Name = "Admin" },
+            new Role { Name = "User" },
+            new Role { Name = "Manager" }
+        );
+        context.SaveChanges();
+    }
+    
+    // Seed Statuses
+    if (!context.Statuses.Any())
+    {
+        context.Statuses.AddRange(
+            new Status { Name = "Active" },
+            new Status { Name = "Inactive" },
+            new Status { Name = "Suspended" }
+        );
+        context.SaveChanges();
+    }
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

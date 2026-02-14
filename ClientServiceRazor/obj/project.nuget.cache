@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Pffmt4dZSYU=",
+  "dgSpecHash": "7YA/JiQ7FQo=",
   "success": true,
   "projectFilePath": "/Users/evgenijbalaker/RiderProjects/ClientServiceRazor/ClientServiceRazor/ClientServiceRazor.csproj",
   "expectedPackageFiles": [
@@ -43,7 +43,21 @@
     "/Users/evgenijbalaker/.nuget/packages/xunit.assert/2.9.3/xunit.assert.2.9.3.nupkg.sha512",
     "/Users/evgenijbalaker/.nuget/packages/xunit.core/2.9.3/xunit.core.2.9.3.nupkg.sha512",
     "/Users/evgenijbalaker/.nuget/packages/xunit.extensibility.core/2.9.3/xunit.extensibility.core.2.9.3.nupkg.sha512",
-    "/Users/evgenijbalaker/.nuget/packages/xunit.extensibility.execution/2.9.3/xunit.extensibility.execution.2.9.3.nupkg.sha512"
+    "/Users/evgenijbalaker/.nuget/packages/xunit.extensibility.execution/2.9.3/xunit.extensibility.execution.2.9.3.nupkg.sha512",
+    "/Users/evgenijbalaker/.nuget/packages/xunit.runner.visualstudio/3.1.0/xunit.runner.visualstudio.3.1.0.nupkg.sha512"
   ],
-  "logs": []
+  "logs": [
+    {
+      "code": "NU1603",
+      "level": "Warning",
+      "message": "ClientServiceRazor depends on xunit.runner.visualstudio (>= 3.0.3) but xunit.runner.visualstudio 3.0.3 was not found. xunit.runner.visualstudio 3.1.0 was resolved instead.",
+      "projectPath": "/Users/evgenijbalaker/RiderProjects/ClientServiceRazor/ClientServiceRazor/ClientServiceRazor.csproj",
+      "warningLevel": 1,
+      "filePath": "/Users/evgenijbalaker/RiderProjects/ClientServiceRazor/ClientServiceRazor/ClientServiceRazor.csproj",
+      "libraryId": "xunit.runner.visualstudio",
+      "targetGraphs": [
+        "net10.0"
+      ]
+    }
+  ]
 }

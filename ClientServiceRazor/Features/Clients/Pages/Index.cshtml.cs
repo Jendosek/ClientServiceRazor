@@ -41,8 +41,8 @@ public class Index : PageModel
             Patronymic = NewClient.Patronymic,
             Email = NewClient.Email,
             BirthDate = NewClient.BirthDate,
-            CreatedAt = DateTime.Now,
-            UpdatedAt = DateTime.Now
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow
         };
         _dbContext.Clients.Add(client);
         _dbContext.SaveChanges();

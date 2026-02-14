@@ -3,11 +3,13 @@
 
 @{
     Layout = null;
+    Layout = "/Pages/Shared/_Layout.cshtml";
     ViewData["Title"] = "Index";
 }
 
 <h2>Add New Client</h2>
 <form method="post">
+    @Html.AntiForgeryToken()
     <div>
         <label>Surname</label>
         <input asp-for="NewClient.Surname"/>
@@ -65,3 +67,6 @@
     </tbody>
 </table>
 
+@section Scripts {
+    @* <partial name="_ValidationScriptsPartial" /> *@
+}

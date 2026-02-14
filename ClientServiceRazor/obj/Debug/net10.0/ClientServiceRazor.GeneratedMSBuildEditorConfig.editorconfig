@@ -34,8 +34,16 @@ build_property.EnableCodeStyleSeverity =
 build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvQ2xpZW50cy9QYWdlcy9JbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[/Users/evgenijbalaker/RiderProjects/ClientServiceRazor/ClientServiceRazor/Features/Clients/Pages/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvQ2xpZW50cy9QYWdlcy9fVmlld0ltcG9ydHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [/Users/evgenijbalaker/RiderProjects/ClientServiceRazor/ClientServiceRazor/Features/Users/Pages/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvVXNlcnMvUGFnZXMvSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/evgenijbalaker/RiderProjects/ClientServiceRazor/ClientServiceRazor/Features/Users/Pages/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = RmVhdHVyZXMvVXNlcnMvUGFnZXMvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [/Users/evgenijbalaker/RiderProjects/ClientServiceRazor/ClientServiceRazor/Pages/Error.cshtml]

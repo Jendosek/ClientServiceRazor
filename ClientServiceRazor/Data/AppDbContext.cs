@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using ClientServiceRazor.Features.Clients.Models;
+using ClientServiceRazor.Features.Users.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace ClientServiceRazor.Data;
@@ -12,6 +13,9 @@ public class AppDbContext : DbContext
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
     public DbSet<Client> Clients { get; set; } = null!;
+    public DbSet<User> Users { get; set; } = null!;
+    public DbSet<Role> Roles { get; set; } = null!;
+    public DbSet<Status> Statuses { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -21,6 +25,14 @@ public class AppDbContext : DbContext
 
         modelBuilder.Entity<Client>()
             .HasIndex(b => b.Email)
+            .IsUnique();
+
+        modelBuilder.Entity<User>()
+            .HasIndex(u => u.Email)
+            .IsUnique();
+
+        modelBuilder.Entity<User>()
+            .HasIndex(u => u.Login)
             .IsUnique();
 
         var assembly = Assembly.GetExecutingAssembly();
@@ -35,6 +47,8 @@ public class AppDbContext : DbContext
                 t.Namespace != null &&
                 t.Namespace.StartsWith(appNamespace, StringComparison.Ordinal) &&
                 !t.IsDefined(typeof(CompilerGeneratedAttribute), inherit: false) && 
+                !t.Namespace.Contains("ViewModels") && // Виключаємо ViewModels
+                t.Namespace.Contains(".Models") && // Тільки класи з папки Models
                 t.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                     .Any(p => string.Equals(p.Name, "Id", StringComparison.OrdinalIgnoreCase))
             );
