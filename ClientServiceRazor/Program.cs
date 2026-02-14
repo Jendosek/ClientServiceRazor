@@ -62,8 +62,8 @@ using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     
-    // Ensure database is created
-    context.Database.EnsureCreated();
+    // Apply pending migrations
+    context.Database.Migrate();
     
     // Seed Roles if they don't exist
     if (!context.Roles.Any())
