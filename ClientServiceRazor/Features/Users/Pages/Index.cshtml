@@ -2,82 +2,105 @@
 @model ClientServiceRazor.Features.Users.Pages.Index
 
 @{
-    Layout = null;
     Layout = "/Pages/Shared/_Layout.cshtml";
     ViewData["Title"] = "Users";
 }
 
-<h2>Add New User</h2>
-<form method="post">
-    @Html.AntiForgeryToken()
-    <div>
-        <label>Login</label>
-        <input asp-for="NewUser.Login"/>
-        <span asp-validation-for="NewUser.Login"></span>
-    </div>
-    <div>
-        <label>Password</label>
-        <input asp-for="NewUser.Password" type="password"/>
-        <span asp-validation-for="NewUser.Password"></span>
-    </div>
-    <div>
-        <label>Email</label>
-        <input asp-for="NewUser.Email"/>
-        <span asp-validation-for="NewUser.Email"></span>
-    </div>
-    <div>
-        <label>Role</label>
-        <select asp-for="NewUser.RoleId">
-            <option value="">-- Select Role --</option>
-            @foreach (var role in Model.Roles)
-            {
-                <option value="@role.Id">@role.Name</option>
-            }
-        </select>
-        <span asp-validation-for="NewUser.RoleId"></span>
-    </div>
-    <div>
-        <label>Status</label>
-        <select asp-for="NewUser.StatusId">
-            <option value="">-- Select Status --</option>
-            @foreach (var status in Model.Statuses)
-            {
-                <option value="@status.Id">@status.Name</option>
-            }
-        </select>
-        <span asp-validation-for="NewUser.StatusId"></span>
-    </div>
-    <button type="submit">Add User</button>
-</form>
+<main class="container py-4">
+    <section class="mb-5">
+        <header class="mb-4">
+            <h1 class="h3 fw-light">Add New User</h1>
+        </header>
+        
+        <form method="post" class="needs-validation">
+            @Html.AntiForgeryToken()
+            
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="NewUser.Login" class="form-label small text-muted">Login</label>
+                    <input asp-for="NewUser.Login" class="form-control form-control-sm" />
+                    <span asp-validation-for="NewUser.Login" class="text-danger small"></span>
+                </div>
+                
+                <div class="col-md-6">
+                    <label asp-for="NewUser.Password" class="form-label small text-muted">Password</label>
+                    <input asp-for="NewUser.Password" type="password" class="form-control form-control-sm" />
+                    <span asp-validation-for="NewUser.Password" class="text-danger small"></span>
+                </div>
+                
+                <div class="col-md-12">
+                    <label asp-for="NewUser.Email" class="form-label small text-muted">Email</label>
+                    <input asp-for="NewUser.Email" type="email" class="form-control form-control-sm" />
+                    <span asp-validation-for="NewUser.Email" class="text-danger small"></span>
+                </div>
+                
+                <div class="col-md-6">
+                    <label asp-for="NewUser.RoleId" class="form-label small text-muted">Role</label>
+                    <select asp-for="NewUser.RoleId" class="form-select form-select-sm">
+                        <option value="">-- Select Role --</option>
+                        @foreach (var role in Model.Roles)
+                        {
+                            <option value="@role.Id">@role.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="NewUser.RoleId" class="text-danger small"></span>
+                </div>
+                
+                <div class="col-md-6">
+                    <label asp-for="NewUser.StatusId" class="form-label small text-muted">Status</label>
+                    <select asp-for="NewUser.StatusId" class="form-select form-select-sm">
+                        <option value="">-- Select Status --</option>
+                        @foreach (var status in Model.Statuses)
+                        {
+                            <option value="@status.Id">@status.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="NewUser.StatusId" class="text-danger small"></span>
+                </div>
+            </div>
+            
+            <div class="mt-3">
+                <button type="submit" class="btn btn-dark btn-sm px-4">Add User</button>
+            </div>
+        </form>
+    </section>
 
-<hr/>
+    <hr class="my-5" />
 
-<h2>Users List</h2>
-<table>
-    <thead>
-    <tr>
-        <th>ID</th>
-        <th>Login</th>
-        <th>Email</th>
-        <th>Role</th>
-        <th>Status</th>
-        <th>Created At</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var user in Model.Users)
-    {
-        <tr>
-            <td>@user.Id</td>
-            <td>@user.Login</td>
-            <td>@user.Email</td>
-            <td>@user.Role.Name</td>
-            <td>@user.Status.Name</td>
-            <td>@user.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td>
-        </tr>
-    }
-    </tbody>
-</table>
+    <section>
+        <header class="mb-4">
+            <h2 class="h3 fw-light">Users List</h2>
+        </header>
+        
+        <div class="table-responsive">
+            <table class="table table-hover table-sm align-middle">
+                <thead class="table-light">
+                    <tr class="text-muted small">
+                        <th>ID</th>
+                        <th>Login</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Created At</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model.Users)
+                    {
+                        <tr>
+                            <td class="text-muted small">@user.Id</td>
+                            <td>@user.Login</td>
+                            <td class="text-muted">@user.Email</td>
+                            <td><span class="badge bg-secondary">@user.Role.Name</span></td>
+                            <td><span class="badge bg-light text-dark">@user.Status.Name</span></td>
+                            <td class="text-muted small">@user.CreatedAt.ToString("dd.MM.yyyy HH:mm")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
 
 @section Scripts {
     @* <partial name="_ValidationScriptsPartial" /> *@

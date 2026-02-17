@@ -8,22 +8,28 @@ var builder = WebApplication.CreateBuilder(args);
 // builder.Services.AddRazorPages();
 
 builder.Services.AddRazorPages(options =>
-    {
-        options.RootDirectory = "/";
-        options.Conventions.AddFolderRouteModelConvention(
-            "/Features",
-            model =>
+{
+    options.RootDirectory = "/";
+    options.Conventions.AddPageRoute("/Pages/Index", "/");
+    options.Conventions.AddPageRoute("/Pages/Privacy", "Privacy");
+    options.Conventions.AddPageRoute("/Clients/Index", "Clients");
+    options.Conventions.AddPageRoute("/Clients/Details", "Clients/{id}");
+    options.Conventions.AddPageRoute("/Users/Index", "Users");
+    //Прибирання службової частини шляху Features/#1#Pages
+    options.Conventions.AddFolderRouteModelConvention(
+        "/",
+        model =>
+        {
+            foreach (var selector in model.Selectors)
             {
-                foreach (var selector in model.Selectors)
-                {
-                    selector.AttributeRouteModel.Template = 
-                        selector.AttributeRouteModel.Template
-                            .Replace("Features/", "")
-                            .Replace("/Pages", "");
-                }
-            });
-    }
-);
+                selector.AttributeRouteModel.Template =
+                    selector.AttributeRouteModel.Template
+                        .Replace("Features/", "")
+                        .Replace("/Pages", "");
+            }
+        }
+    );
+});
 
 
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -77,13 +83,13 @@ app.MapStaticAssets();
 app.MapRazorPages()
     .WithStaticAssets();
 
-app.MapGet("/",
-    context =>
-    {
-        context.Response.Redirect("/Clients");
-        return Task.CompletedTask;
-    }
-);
+// app.MapGet("/",
+//     context =>
+//     {
+//         context.Response.Redirect("/Clients");
+//         return Task.CompletedTask;
+//     }
+// );
 
 
 app.Run();
