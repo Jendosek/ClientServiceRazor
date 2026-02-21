@@ -1,0 +1,99 @@
+@page
+@model ClientServiceRazor.Features.Clients.Pages.Address
+
+@{
+    Layout = "/Pages/Shared/_Layout.cshtml";
+    ViewData["Title"] = Model.HasAddress ? "Update Address" : "Add Address";
+}
+
+<main class="container py-4">
+    <section>
+        <header class="mb-4">
+            <h1 class="h3 fw-light">@(Model.HasAddress ? "Update Address" : "Add Address")</h1>
+        </header>
+        
+        <form method="post" class="needs-validation">
+            @Html.AntiForgeryToken()
+            
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label asp-for="AddressData.Country" class="form-label small text-muted">Country</label>
+                    <input asp-for="AddressData.Country" class="form-control form-control-sm" />
+                    <span asp-validation-for="AddressData.Country" class="text-danger small"></span>
+                </div>
+                
+                <div class="col-md-6">
+                    <label asp-for="AddressData.Region" class="form-label small text-muted">Region</label>
+                    <input asp-for="AddressData.Region" class="form-control form-control-sm" />
+                    <span asp-validation-for="AddressData.Region" class="text-danger small"></span>
+                </div>
+                
+                <div class="col-md-6">
+                    <label asp-for="AddressData.Area" class="form-label small text-muted">Area</label>
+                    <input asp-for="AddressData.Area" class="form-control form-control-sm" />
+                    <span asp-validation-for="AddressData.Area" class="text-danger small"></span>
+                </div>
+                
+                <div class="col-md-6">
+                    <label asp-for="AddressData.City" class="form-label small text-muted">City</label>
+                    <input asp-for="AddressData.City" class="form-control form-control-sm" />
+                    <span asp-validation-for="AddressData.City" class="text-danger small"></span>
+                </div>
+                
+                <div class="col-md-12">
+                    <label asp-for="AddressData.Street" class="form-label small text-muted">Street</label>
+                    <input asp-for="AddressData.Street" class="form-control form-control-sm" />
+                    <span asp-validation-for="AddressData.Street" class="text-danger small"></span>
+                </div>
+                
+                <div class="col-md-4">
+                    <label asp-for="AddressData.Building" class="form-label small text-muted">Building</label>
+                    <input asp-for="AddressData.Building" class="form-control form-control-sm" />
+                    <span asp-validation-for="AddressData.Building" class="text-danger small"></span>
+                </div>
+                
+                <div class="col-md-4">
+                    <label asp-for="AddressData.Apartment" class="form-label small text-muted">Apartment</label>
+                    <input asp-for="AddressData.Apartment" class="form-control form-control-sm" />
+                    <span asp-validation-for="AddressData.Apartment" class="text-danger small"></span>
+                </div>
+                
+                <div class="col-md-4">
+                    <label asp-for="AddressData.Entrance" class="form-label small text-muted">Entrance</label>
+                    <input asp-for="AddressData.Entrance" class="form-control form-control-sm" />
+                    <span asp-validation-for="AddressData.Entrance" class="text-danger small"></span>
+                </div>
+                
+                <div class="col-md-12">
+                    <label asp-for="AddressData.Room" class="form-label small text-muted">Room</label>
+                    <input asp-for="AddressData.Room" class="form-control form-control-sm" />
+                    <span asp-validation-for="AddressData.Room" class="text-danger small"></span>
+                </div>
+            </div>
+            
+            <div class="mt-3">
+                <button type="submit" class="btn btn-dark btn-sm px-4">@(Model.HasAddress ? "Update Address" : "Add Address")</button>
+                <a asp-page="/Features/Clients/Pages/Details" asp-route-id="@Model.ClientId" class="btn btn-outline-secondary btn-sm px-4 ms-2">Back to Details</a>
+                
+                @if (Model.HasAddress)
+                {
+                    <form method="post" class="d-inline" id="clearAddressForm">
+                        @Html.AntiForgeryToken()
+                        <button type="submit" 
+                                asp-page-handler="ClearAddress" 
+                                asp-route-id="@Model.ClientId"
+                                class="btn btn-danger btn-sm px-4 ms-2" 
+                                onclick="return confirm('Are you sure you want to delete the address? This action cannot be undone.');">
+                            Clear Address
+                        </button>
+                    </form>
+                }
+            </div>
+        </form>
+    </section>
+</main>
+
+@section Scripts {
+    @* <partial name="_ValidationScriptsPartial" /> *@
+}
+

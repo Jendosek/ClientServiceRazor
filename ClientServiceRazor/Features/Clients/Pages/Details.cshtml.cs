@@ -3,6 +3,7 @@ using ClientServiceRazor.Features.Clients.Models;
 using ClientServiceRazor.Features.Clients.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace ClientServiceRazor.Features.Clients.Pages;
 
@@ -17,20 +18,52 @@ public class Details : PageModel
     
     [BindProperty]
     public ClientViewModel NewClient { get; set; } = new();
-    
+
+    public int ClientId { get; set; }
+
+    public AddressViewModel AddressData { get; set; } = new();
+
+    public bool HasAddress { get; set; }
+
     public void OnGet(int id)
     {
-        NewClient = _dbContext.Clients.Where(client => client.Id == id)
-            .Select(client => new ClientViewModel
+        ClientId = id;
+        var client = _dbContext.Clients
+            .Include(c => c.Address)
+            .FirstOrDefault(c => c.Id == id);
+
+        if (client == null)
+        {
+            NewClient = new ClientViewModel();
+            HasAddress = false;
+            return;
+        }
+
+        NewClient = new ClientViewModel
         {
             Surname = client.Surname,
             FirstName = client.FirstName,
             Patronymic = client.Patronymic,
             Email = client.Email,
             BirthDate = client.BirthDate
-        })
-            .FirstOrDefault()  ?? new ClientViewModel();
-        Console.WriteLine(NewClient);
+        };
+
+        HasAddress = client.Address != null;
+        if (client.Address != null)
+        {
+            AddressData = new AddressViewModel
+            {
+                Country = client.Address.Country,
+                Region = client.Address.Region,
+                Area = client.Address.Area,
+                City = client.Address.City,
+                Street = client.Address.Street,
+                Building = client.Address.Building,
+                Apartment = client.Address.Apartment,
+                Entrance = client.Address.Entrance,
+                Room = client.Address.Room
+            };
+        }
     }
 
     public IActionResult OnPost(int id)
