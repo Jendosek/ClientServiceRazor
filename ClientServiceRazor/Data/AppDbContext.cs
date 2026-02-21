@@ -13,6 +13,7 @@ public class AppDbContext : DbContext
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
     public DbSet<Client> Clients { get; set; } = null!;
+    public DbSet<Phone> Phones { get; set; } = null!;
     public DbSet<User> Users { get; set; } = null!;
     public DbSet<Role> Roles { get; set; } = null!;
     public DbSet<Status> Statuses { get; set; } = null!;
@@ -34,6 +35,16 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<User>()
             .HasIndex(u => u.Login)
             .IsUnique();
+
+        // Explicit Phone configuration
+        modelBuilder.Entity<Phone>()
+            .HasKey(p => p.Id);
+        
+        modelBuilder.Entity<Phone>()
+            .HasOne(p => p.Client)
+            .WithMany(c => c.Phones)
+            .HasForeignKey(p => p.ClientId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         var assembly = Assembly.GetExecutingAssembly();
         var appNamespace = "ClientServiceRazor";

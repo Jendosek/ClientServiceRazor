@@ -1,10 +1,60 @@
 @page
+@using Microsoft.AspNetCore.Mvc.Razor
 @model ClientServiceRazor.Features.Clients.Pages.Details
 
 @{
     Layout = "/Pages/Shared/_Layout.cshtml";
     ViewData["Title"] = "Client Details";
 }
+
+<script>
+    // Phone mask configuration by country code
+    const phoneMasks = {
+        '380': { prefix: '+380', digits: 9, pattern: '+380 (XX) XXX-XX-XX', placeholder: '+380 (50) 123-45-67', country: 'Ukraine' },
+        '1': { prefix: '+1', digits: 10, pattern: '+1 (XXX) XXX-XXXX', placeholder: '+1 (234) 567-8901', country: 'USA' },
+        '44': { prefix: '+44', digits: 10, pattern: '+44 XXXX XXXXXX', placeholder: '+44 1234 567890', country: 'Great Britain' },
+        '49': { prefix: '+49', digits: 11, pattern: '+49 XXX XXXXXXXX', placeholder: '+49 123 45678901', country: 'Germany' },
+        '33': { prefix: '+33', digits: 9, pattern: '+33 X XX XX XX XX', placeholder: '+33 1 23 45 67 89', country: 'France' }
+    };
+
+    function getCountryName(countryCode) {
+        const maskInfo = phoneMasks[countryCode];
+        return maskInfo ? maskInfo.country : 'Unknown';
+    }
+
+    function updatePhoneMask(countrySelect, phoneInput) {
+        const countryCode = countrySelect.value;
+        const maskInfo = phoneMasks[countryCode];
+        
+        if (maskInfo) {
+            phoneInput.placeholder = maskInfo.placeholder;
+            phoneInput.maxLength = maskInfo.prefix.length + maskInfo.digits + 10; // Add extra for formatting chars
+        }
+    }
+
+    function formatPhoneInput(input, countrySelect) {
+        const countryCode = countrySelect.value;
+        const maskInfo = phoneMasks[countryCode];
+        
+        if (!maskInfo) return;
+
+        let value = input.value.replace(/\D/g, ''); // Remove all non-digits
+        
+        // If value starts with country code, remove it
+        const countryCodeDigits = maskInfo.prefix.replace('+', '');
+        if (value.startsWith(countryCodeDigits)) {
+            value = value.substring(countryCodeDigits.length);
+        }
+
+        // Limit to the correct number of digits
+        if (value.length > maskInfo.digits) {
+            value = value.substring(0, maskInfo.digits);
+        }
+
+        // Format with prefix
+        input.value = maskInfo.prefix + value;
+    }
+</script>
 
 <main class="container py-4">
     <section>
@@ -54,7 +104,117 @@
             </div>
         </form>
         
+        <div>
+            <form method="post">
+                <button asp-page-handler="ShowPhoneForm" asp-route-id="@Model.ClientId" class="btn btn-outline-dark btn-sm px-4 mt-2">Add phone</button>
+            </form>
+        </div>
         
+        @if (Model.ShowPhoneForm) {
+            <form method="post" class="mt-3">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="@Model.ClientId" />
+                
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="NewPhone.CountryCode" class="form-label small text-muted">Country Code</label>
+                        <select asp-for="NewPhone.CountryCode" class="form-select form-select-sm" id="addPhoneCountry" 
+                                onchange="updatePhoneMask(this, document.getElementById('addPhoneNumber'))">
+                            <option value="380">Ukraine (+380)</option>
+                            <option value="1">USA (+1)</option>
+                            <option value="44">Great Britain (+44)</option>
+                            <option value="49">Germany (+49)</option>
+                            <option value="33">France (+33)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label asp-for="NewPhone.Number" class="form-label small text-muted">Phone Number</label>
+                        <input asp-for="NewPhone.Number" id="addPhoneNumber" class="form-control form-control-sm" 
+                               placeholder="+380 (50) 123-45-67" 
+                               oninput="formatPhoneInput(this, document.getElementById('addPhoneCountry'))"
+                               maxlength="25" />
+                        <span asp-validation-for="NewPhone.Number" class="text-danger small"></span>
+                    </div>
+                </div>
+                
+                <button type="submit" asp-page-handler="AddPhone" asp-route-id="@Model.ClientId" class="btn btn-dark btn-sm px-4 mt-3">Save Phone</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm px-4 ms-2 mt-3" onclick="location.href='@Request.Path'">Cancel</button>
+            </form>
+        }
+
+        @if (Model.ShowEditPhoneForm) {
+            <form method="post" class="mt-3">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" value="@Model.ClientId" />
+                <input type="hidden" name="phoneId" value="@Model.EditingPhoneId" />
+                
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="NewPhone.CountryCode" class="form-label small text-muted">Country Code</label>
+                        <select asp-for="NewPhone.CountryCode" class="form-select form-select-sm" id="editPhoneCountry"
+                                onchange="updatePhoneMask(this, document.getElementById('editPhoneNumber'))">
+                            <option value="380">Ukraine (+380)</option>
+                            <option value="1">USA (+1)</option>
+                            <option value="44">Great Britain (+44)</option>
+                            <option value="49">Germany (+49)</option>
+                            <option value="33">France (+33)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label asp-for="NewPhone.Number" class="form-label small text-muted">Phone Number</label>
+                        <input asp-for="NewPhone.Number" id="editPhoneNumber" class="form-control form-control-sm" 
+                               placeholder="+380 (50) 123-45-67"
+                               oninput="formatPhoneInput(this, document.getElementById('editPhoneCountry'))"
+                               maxlength="25" />
+                        <span asp-validation-for="NewPhone.Number" class="text-danger small"></span>
+                    </div>
+                </div>
+                
+                <button type="submit" asp-page-handler="UpdatePhone" asp-route-id="@Model.ClientId" asp-route-phoneId="@Model.EditingPhoneId" class="btn btn-dark btn-sm px-4 mt-3">Update Phone</button>
+                <button type="button" class="btn btn-outline-secondary btn-sm px-4 ms-2 mt-3" onclick="location.href='@Request.Path'">Cancel</button>
+            </form>
+        }
+
+        <div class="mt-3">
+            <button class="btn btn-outline-dark btn-sm px-4" type="button" data-bs-toggle="collapse" data-bs-target="#clientPhones" aria-expanded="false" aria-controls="clientPhones">
+                Show/Hide Phones
+            </button>
+        </div>
+
+        <div id="clientPhones" class="collapse mt-3">
+            @if (Model.Phones != null && Model.Phones.Count > 0)
+            {
+                <div class="card card-body">
+                    <div class="row g-2 small">
+                        @foreach (var phone in Model.Phones)
+                        {
+                            <div class="col-md-12 d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="text-muted">Phone:</span> <strong>@phone.Number</strong> 
+                                    <span class="ms-3 text-muted">Country:</span> <strong>+@((int)phone.CountryCode) (@Model.GetCountryName(phone.CountryCode))</strong>
+                                </div>
+                                <div>
+                                    <form method="post" style="display: inline;">
+                                        <button type="submit" asp-page-handler="EditPhoneForm" asp-route-id="@Model.ClientId" asp-route-phoneId="@phone.Id" class="btn btn-primary btn-sm">Edit</button>
+                                    </form>
+                                    <form method="post" style="display: inline;">
+                                        <button type="submit" asp-page-handler="DeletePhone" asp-route-id="@Model.ClientId" asp-route-phoneId="@phone.Id" class="btn btn-danger btn-sm" onclick="return confirm('Delete this phone?');">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-light small mb-0">
+                    No phones added yet. Click "Add phone" to add one.
+                </div>
+            }
+        </div>
 
         <div class="mt-3">
             <button class="btn btn-outline-dark btn-sm px-4" type="button" data-bs-toggle="collapse" data-bs-target="#clientAddress" aria-expanded="false" aria-controls="clientAddress">
